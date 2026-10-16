@@ -1,18 +1,9 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
 const API = "http://localhost:8080/api";
-
-const DAYS = [
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-];
 
 function normalizeDay(day) {
   return String(day || "").trim().toUpperCase();
@@ -110,40 +101,6 @@ function getClinicStatus(clinic) {
     todayShifts,
     allShifts: shifts,
   };
-}
-
-function getNextOpening(clinic) {
-  const shifts = Array.isArray(clinic?.shifts) ? clinic.shifts : [];
-  const { day, time } = getIndiaTimeParts();
-
-  const todayIndex = DAYS.indexOf(day);
-
-  const upcoming = shifts
-    .map((shift) => {
-      const shiftDay = normalizeDay(shift.dayOfWeek);
-      const shiftDayIndex = DAYS.indexOf(shiftDay);
-
-      if (shiftDayIndex === -1) return null;
-
-      const opening = String(shift.openingTime || "").slice(0, 5);
-      if (!opening) return null;
-
-      let daysUntil = (shiftDayIndex - todayIndex + 7) % 7;
-
-      if (daysUntil === 0 && opening <= time) {
-        daysUntil = 7;
-      }
-
-      return { shift, daysUntil, opening };
-    })
-    .filter(Boolean)
-    .sort(
-      (a, b) =>
-        a.daysUntil - b.daysUntil ||
-        a.opening.localeCompare(b.opening)
-    );
-
-  return upcoming[0] || null;
 }
 
 function ClinicStatus({ clinic, compact = false }) {
@@ -250,6 +207,7 @@ function Home() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [, setClockTick] = useState(0);
 
+  // Refresh clinic opening status every 30 seconds.
   useEffect(() => {
     const timer = window.setInterval(() => {
       setClockTick((value) => value + 1);
@@ -258,6 +216,7 @@ function Home() {
     return () => window.clearInterval(timer);
   }, []);
 
+  // Load registered clinics.
   useEffect(() => {
     const controller = new AbortController();
 
@@ -290,6 +249,7 @@ function Home() {
     }
 
     loadClinics();
+
     return () => controller.abort();
   }, []);
 
@@ -305,12 +265,13 @@ function Home() {
       .includes(query);
   });
 
+  // Load queue information whenever the selected clinic changes.
   useEffect(() => {
     if (!selectedClinic) {
       setQueueData([]);
       setQueueError("");
       setQueueLoading(false);
-      return;
+      return undefined;
     }
 
     const controller = new AbortController();
@@ -345,8 +306,9 @@ function Home() {
     }
 
     loadQueue();
+
     return () => controller.abort();
-  }, [selectedClinic?.id]);
+  }, [selectedClinic]);
 
   const waitingQueue = queueData
     .filter((item) => item.status === "WAITING")
@@ -376,7 +338,7 @@ function Home() {
     setMessage("");
     setShowSuggestions(false);
 
-    setTimeout(() => scrollTo("join-queue-box", "center"), 150);
+    window.setTimeout(() => scrollTo("join-queue-box", "center"), 150);
   }
 
   function handleSearch(event) {
@@ -712,6 +674,7 @@ function Home() {
                   </div>
 
                   <button
+                    type="button"
                     className="join-button"
                     onClick={() => navigate("/login")}
                   >
@@ -815,6 +778,7 @@ function Home() {
             </div>
 
             <button
+              type="button"
               className="view-all"
               onClick={() => {
                 setSearchText("");
