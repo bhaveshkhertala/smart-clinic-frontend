@@ -168,16 +168,18 @@ function Register() {
       clinic: { id: Number(formData.clinicId) },
     };
 
-    const response = await fetch(
-     "https://samrt-clinic-backend.onrender.com/api/users",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(doctorData),
-      }
-    );
+   
+const response = await fetch(
+  "https://samrt-clinic-backend.onrender.com/api/doctors",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(doctorData),
+  }
+);
+
 
     const data = await readResponse(response);
 
