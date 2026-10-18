@@ -7,7 +7,7 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
-const API = "http://localhost:8080/api";
+const API = "https://samrt-clinic-backend.onrender.com/api";
 
 function DoctorDashboard() {
   const navigate = useNavigate();

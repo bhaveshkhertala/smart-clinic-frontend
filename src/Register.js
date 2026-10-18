@@ -36,7 +36,7 @@ function Register() {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/api/clinics"
+          "https://samrt-clinic-backend.onrender.com/api/clinics"
         );
 
         if (!response.ok) {
@@ -113,7 +113,7 @@ function Register() {
     };
 
     const response = await fetch(
-      "http://localhost:8080/api/users",
+      "https://samrt-clinic-backend.onrender.com/api/users",
       {
         method: "POST",
         headers: {
@@ -169,7 +169,7 @@ function Register() {
     };
 
     const response = await fetch(
-      "http://localhost:8080/api/doctors",
+     "https://samrt-clinic-backend.onrender.com/api/users",
       {
         method: "POST",
         headers: {
@@ -220,7 +220,7 @@ function Register() {
     };
 
     const response = await fetch(
-      "http://localhost:8080/api/clinics/register-owner",
+      "https://samrt-clinic-backend.onrender.com/api/clinics/register-owner",
       {
         method: "POST",
         headers: {

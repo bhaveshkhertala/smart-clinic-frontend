@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL ="https://samrt-clinic-backend.onrender.com/api";
 
 function getClinicId(doctor) {
   return (

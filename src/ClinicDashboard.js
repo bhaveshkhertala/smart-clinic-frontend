@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = "https://samrt-clinic-backend.onrender.com/api";
 
 const DAYS = [
   "MONDAY",
